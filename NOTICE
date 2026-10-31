@@ -1,0 +1,8 @@
+CB Skaner - CB receiver overlay app for the Quansheng UV-K1 / F4HWN Labs
+Copyright 2026 Kriss80 Elektryczny SP6HAX
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+CB Skaner runs on the F4HWN firmware by Armel F4HWN and contributors and is
+built against its overlay-app API, fetched at build time from
+https://github.com/armel/uv-k1-k5v3-firmware-custom (not included here).
