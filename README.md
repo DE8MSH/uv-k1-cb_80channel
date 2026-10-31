@@ -4,6 +4,8 @@
 
 Author / Autor: **Kriss80 Elektryczny SP6HAX**
 
+<p align="center"><img src="CBSkaner.png" alt="CBSkaner on the UV-K1 screen / CBSkaner na ekranie UV-K1" width="520"></p>
+
 [English](#english) · [Polski](#polski)
 
 ---
