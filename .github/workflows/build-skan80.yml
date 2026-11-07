@@ -34,7 +34,7 @@ jobs:
           assert magic == b"FAP1" and hdr == 1 and abi == 1 and level == 3
           assert 0 < size <= 4096 and 64+size+assets == len(raw)
           assert crc == zlib.crc32(raw[64:64+size])
-          assert entry == 0 and name.split(b"\\0")[0] == b"Skan80"
+          assert entry == 0 and name.rstrip(bytes([0])) == b"Skan80"
           assert vma == 0x20000280
           print("PASS: Skan80.app", size, "code bytes, CRC", hex(crc))
           PY
