@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds build/CBSkaner.app, an overlay app for the F4HWN Labs firmware.
+# Builds build/Skan80.app, an overlay app for the F4HWN Labs firmware.
 #
 # The app is compiled against the F4HWN overlay-app API. Its headers and
 # packer are not part of this repository: they are fetched from the F4HWN
@@ -11,9 +11,9 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP=cbskaner
-APP_NAME="CBSkaner"
-APP_VER="1.0"
+APP=skan80
+APP_NAME="Skan80"
+APP_VER="1.1"
 APP_API_MIN=3
 APP_VMA=${APP_VMA:-0x20000280}           # overlay address of F4HWN v6.3.0
 F4HWN_REPO=armel/uv-k1-k5v3-firmware-custom

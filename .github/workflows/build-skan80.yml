@@ -1,0 +1,49 @@
+name: Build Skan80
+
+on:
+  push:
+    branches: [main, skan80-80ch-v1]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cross compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-arm-none-eabi binutils-arm-none-eabi
+      - name: Validate all 80 channel frequencies
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -Isrc tests/test_channels.c -o /tmp/skan80-test
+          /tmp/skan80-test
+      - name: Build overlay
+        run: ./build.sh
+      - name: Validate app header, code size and CRC
+        run: |
+          python3 - <<'PY'
+          import struct, zlib, pathlib
+          raw = pathlib.Path("build/Skan80.app").read_bytes()
+          assert len(raw) >= 64
+          magic, hdr, abi, level, size, crc, entry, flags, name, ver, vma, caps, assets, asset_crc = struct.unpack(
+              "<4sHBBIIHH16s16sIIHH", raw[:64])
+          assert magic == b"FAP1" and hdr == 1 and abi == 1 and level == 3
+          assert 0 < size <= 4096 and 64+size+assets == len(raw)
+          assert crc == zlib.crc32(raw[64:64+size])
+          assert entry == 0 and name.rstrip(bytes([0])) == b"Skan80"
+          assert vma == 0x20000280
+          print("PASS: Skan80.app", size, "code bytes, CRC", hex(crc))
+          PY
+      - name: Generate SHA256
+        run: (cd build && sha256sum Skan80.app > Skan80.app.sha256)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Skan80-Labs-app
+          path: |
+            build/Skan80.app
+            build/Skan80.app.sha256
+          if-no-files-found: error
